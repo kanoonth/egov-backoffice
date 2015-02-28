@@ -30,6 +30,7 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
+		exec("php artisan make:migration crate_test1");
 		return view('home');
 	}
 
