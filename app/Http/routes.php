@@ -70,11 +70,26 @@ Route::get('documents/{id}', [
 /////////////////////////////////////////////////////////////////////
 
 Route::get('places','PlaceController@index');
+
 Route::get('places/add', [
     'as' => 'place-add', 'uses' => 'PlaceController@addPlaceShow'
 ]);
 Route::post('places/add/submit', [
     'as' => 'place-add-submit', 'uses' => 'PlaceController@addPlace'
+]);
+Route::get('places/edit/{id}', [
+    'as' => 'place-edit', 'uses' => 'PlaceController@editPlaceShow'
+]);
+
+Route::post('places/edit/submit', [
+    'as' => 'place-edit-submit', 'uses' => 'PlaceController@editPlace'
+]);
+
+Route::get('places/remove/{id}', [
+    'as' => 'place-remove', 'uses' => 'PlaceController@removePlace'
+]);
+Route::get('places/{id}', [
+    'as' => 'place', 'uses' => 'PlaceController@detail'
 ]);
 
 
@@ -85,8 +100,6 @@ Route::get('image', [
 Route::post('image/upload', [
     'as' => 'image-upload', 'uses' => 'ImageController@uploadImage'
 ]);
-
-Route::get('map','MapController@index');
 
 Route::get('queue','QueueController@showQueue');
 
@@ -106,4 +119,8 @@ Route::get('api/v1/transaction', array(
 
 Route::get('api/v1/transaction/{version}', array(
 			'uses' => 'ServiceController@getTransaction'
+));
+
+Route::get('api/v1/actions/{id}/places', array(
+            'uses' => 'ServiceController@getPlaceByAction'
 ));

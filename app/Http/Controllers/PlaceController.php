@@ -22,11 +22,8 @@ class PlaceController extends Controller {
     }
 
     public function detail($id){
-        $old = Document::leftJoin('requirement', 'document.action_id', '=', 'requirement.action_id')
-            ->where('document.action_id','=',$id)->get();
-        return view('action.detail')
-        ->with('action', Action::where('action_id','=',$id)->first())
-        ->with('olds',$old);
+        return view('place.detail')
+        ->with('place', Place::where('place_id', '=', $id)->first());
     }
 
     public function addPlaceShow(){
@@ -45,49 +42,33 @@ class PlaceController extends Controller {
         ]);
 
         return redirect('places/add')
-                       ->with('success', 'เพิ่มบริการเรียบร้อยแล้ว');
+                       ->with('success', 'เพิ่มสถานที่เรียบร้อยแล้ว');
     }
 
-    public function editActionShow($id){
-        $action = Action::where('action_id','=',$id)->first();
-        return view('action.editAction')
-                        ->with('action',$action)
-                        ->with('documents',Document::all());
+    public function editPlaceShow($id){
+        $place = Place::where('place_id','=',$id)->first();
+        return view('place.editPlace')->with('place',$place);
     }
 
-    public function editAction(Request $request){
+    public function editPlace(Request $request){
         $id = $request->input('id');
         $name = $request->input('name');
-        $description = $request->input('description');
-        Action::where('action_id', $id)
-            ->update(['name' => $name,'description' => $description]);
-        return redirect('actions/'.$id)
-                       ->with('success', 'แก้ไขบริการเรียบร้อยแล้ว');
+        $lat = $request->input('lat');
+        $lng = $request->input('lng');
+
+        Place::where('place_id', $id)
+            ->update(['name' => $name,'latitude' => $lat,
+            'longitude' => $lng]);
+
+        return redirect('places/'.$id)
+                       ->with('success', 'แก้ไขสถานที่เรียบร้อยแล้ว');
     }
 
-    public function removeAction($id){
-        Action::where('action_id', $id)->delete();
-        return redirect('actions')
-                       ->with('success', 'ลบบริการเรียบร้อยแล้ว');
+    public function removePlace($id){
+        Place::where('place_id', $id)->delete();
+        return redirect('places')
+                       ->with('success', 'ลบสถานที่เรียบร้อยแล้ว');
     }
 
-    public function show($id){
-        try{
-            $response = [
-                'action' => []
-            ];
-            $statusCode = 200;
-            $action = Action::find($id);
-            $response['action'][] = [
-                'id' => $action->action_id,
-                'name' => $action->name,
-                'description' => $action->description
-            ];
-        }catch (Exception $e){
-            $statusCode = 404;
-        }finally{
-            return Response::json($response, $statusCode);
-        }
-    }
 
 }
