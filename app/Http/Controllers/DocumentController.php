@@ -2,6 +2,7 @@
 use App\Action;
 use App\Requirement;
 use App\Document;
+use App\Transaction;
 use Illuminate\Http\Request;
 
 class DocumentController extends Controller {
@@ -46,6 +47,11 @@ class DocumentController extends Controller {
         $file->move($destinationPath,$filename);
         Document::where('document_id', $id)
             ->update(['photo_path' => $path]);
+
+        // TODO: Check the validity of this code, by mapfap
+        $gen = "INSERT INTO Document(id, name, description, photo_path) VALUES('$id', '$name', '$description', '$filename');";
+        Transaction::insert(['type' => 'S', 'content' => $gen]);
+
         return redirect('documents/add')
                        ->with('success', 'เพิ่มเอกสารเรียบร้อยแล้ว');
     }

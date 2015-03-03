@@ -6,6 +6,6 @@ class Transaction extends Model {
 
 	protected $table = 'transaction';
 
-	protected $fillable = ['type', 'content'];
+	//protected $fillable = ['name', 'description','photo_path'];
 
 }
