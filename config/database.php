@@ -55,10 +55,10 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'unix_socket'   => '/Applications/MAMP/tmp/mysql/mysql.sock',
+			// 'unix_socket'   => '/var/run/mysqld/mysql.sock',
 			'database'  => 'askme',
 			'username'  => 'root',
-			'password'  => 'root',
+			'password'  => 'if7YYZaVQg',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

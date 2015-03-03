@@ -7,6 +7,10 @@
 	<title>AskMe!</title>
 
 	<link href="/css/app.css" rel="stylesheet">
+	<link href="/css/multi-select.css" rel="stylesheet">
+	<link href="/css/dropzone.css" rel="stylesheet">
+	<link href="/css/slimbox2.css" rel="stylesheet">
+
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -19,6 +23,38 @@
 	<![endif]-->
 </head>
 <body>
+	<style type="text/css">
+		.notice{
+			position: fixed;
+			top: 10%;
+			left: 30%;
+			width: 40%;
+			line-height: 40px;
+			text-align: center;
+			overflow: auto;
+			z-index: 4000;
+			color:#fff;
+			font-family: MyriadPro,Geneva,Arial,sans-serif;
+			font-size:30px;
+			padding:10px 10px 10px 10px;
+			border-radius: 5px;
+		}
+		.notice-success{
+			background-color: rgba(62,201,179,0.7);
+		}
+		.notice-fail{
+			background-color: rgba(246,81,136,0.7);
+		}
+	</style>
+	@if(Session::has('success'))
+	<div id="notice" class="notice notice-success">
+        {{ Session::get('success') }}
+    </div>
+  	@elseif(Session::has('fail'))
+    <div id="notice" class="notice notice-fail">
+        {{ Session::get('fail') }}
+    </div>
+	@endif
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -53,6 +89,7 @@
 								<li><a href="/places/">แผนที่</a></li>
 							</ul>
 						</li>
+						<li><a href="{{ route('image' )}}">อัพโหลดรูป</a></li>
 					@endif
 				</ul>
 
@@ -73,10 +110,22 @@
 		</div>
 	</nav>
 
-	@yield('content')
-
 	<!-- Scripts -->
+	
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="/js/jquery.multi-select.js"></script>
+	<script src="/js/dropzone.js"></script>
+	<script src="/js/jquery.quicksearch.js"></script>
+	<script src="/js/slimbox2.js"></script>
+	<script type="text/javascript">
+		if(document.getElementById("notice")!== null)
+	        $('#notice').delay(3000).fadeOut(1000);
+	    $(document).ready(function(){
+		  $('.alert').fadeOut( 3000 );
+	});
+	</script>
+	@yield('content')
+
 </body>
 </html>

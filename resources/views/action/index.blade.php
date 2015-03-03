@@ -5,10 +5,14 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading text-right">
-					<button type="button" class="btn btn-success">
- 				 		สร้างบริการ
-					</button>
+				<div class="panel-heading">
+					<div class="row"><h2>
+					  <div class="col-md-10">รายการบริการทั้งหมด</div>
+					  <div class="col-md-2"><a href="{{ route('action-add') }}"><button type="button" class="btn btn-success">
+ 				 		เพิ่มบริการ
+						</button></a></div>
+					</h2>
+					</div>
 				</div>
 
 				<div class="panel-body">

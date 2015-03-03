@@ -27,7 +27,8 @@ class ServiceController extends Controller {
     
     public function getTransaction($version) {
         try{
-            $response = [];
+            $response = [
+            ];
             $statusCode = 200;
             $transactions = Transaction::where('id','>',$version)->get();
             foreach($transactions as $transaction){
