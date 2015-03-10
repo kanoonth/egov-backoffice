@@ -3,6 +3,7 @@ use App\Action;
 use App\Requirement;
 use App\Document;
 use App\Transaction;
+use App\Queue;
 use Illuminate\Http\Request;
 
 class DocumentController extends Controller {
@@ -39,18 +40,22 @@ class DocumentController extends Controller {
         $id = Document::insertGetId(
             ['name' => $name,'description' => $description]
         );
+        $filename = "";
         $file = $request->file('file');
-        $extension =$file->getClientOriginalExtension();
-        $filename = $id.'_'.str_random(12).'.'.$extension;
-        $destinationPath = public_path().'/images/upload';
-        $path = '/images/upload/'.$filename;
-        $file->move($destinationPath,$filename);
-        Document::where('document_id', $id)
-            ->update(['photo_path' => $path]);
-
+        if(!is_null($file)){
+            $extension =$file->getClientOriginalExtension();
+            $filename = $id.'_'.str_random(12).'.'.$extension;
+            $destinationPath = public_path().'/images/upload';
+            $path = '/images/upload/'.$filename;
+            $file->move($destinationPath,$filename);
+            Document::where('document_id', $id)
+                ->update(['photo_path' => $path]);
+        }
         // TODO: Check the validity of this code, by mapfap
         $gen = "INSERT INTO Document(id, name, description, photo_path) VALUES('$id', '$name', '$description', '$filename');";
         Transaction::insert(['type' => 'S', 'content' => $gen]);
+        $gen = $filename;
+        Transaction::insert(['type' => 'F', 'content' => $gen]);
 
         return redirect('documents/add')
                        ->with('success', 'เพิ่มเอกสารเรียบร้อยแล้ว');
@@ -84,6 +89,7 @@ class DocumentController extends Controller {
     }
 
     public function removeDocument($id){
+        Requirement::where("document_id",$id)->delete();
         Document::where('document_id', $id)->delete();
         return redirect('documents')
                        ->with('success', 'ลบเอกสารเรียบร้อยแล้ว');

@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use App\Requirement;
 use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model {

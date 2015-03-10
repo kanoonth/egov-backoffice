@@ -1,11 +1,17 @@
 <?php namespace App;
 
+use App\Action;
+use App\Requirement;
+use App\Document;
+use App\Category;
+use App\Available;
 use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model {
 
 	protected $table = 'action';
 
-	protected $fillable = ['name', 'description'];
+	protected $fillable = ['name', 'description','category_id'];
+
 
 }

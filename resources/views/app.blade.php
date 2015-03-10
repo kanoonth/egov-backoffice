@@ -10,6 +10,7 @@
 	<link href="/css/multi-select.css" rel="stylesheet">
 	<link href="/css/dropzone.css" rel="stylesheet">
 	<link href="/css/slimbox2.css" rel="stylesheet">
+	<link href="/css/jquery-ui.css" rel="stylesheet">
 
 
 	<!-- Fonts -->
@@ -75,19 +76,25 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">บริการ <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="/actions/">รายการบริการทั้งหมด</a></li>
+								<li><a href="{{route('action-add')}}">เพิ่มบริการ</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">เอกสาร <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="/documents/">รายการเอกสารทั้งหมด</a></li>
+								<li><a href="{{route('document-add')}}">เพิ่มเอกสาร</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">สำนักงานเขต <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">สถานที่บริการ <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="/places/">แผนที่</a></li>
+								<li><a href="/places/">สภานที่บริการทั้งหมด</a></li>
+								<li><a href="{{ route('place-add' )}}">เพิ่มสถานที่ใหม่</a></li>
 							</ul>
+						</li>
+						<li>
+							<a href="/queue">แสดงรายการจองทั้งหมด</a>
 						</li>
 						<li><a href="{{ route('image' )}}">อัพโหลดรูป</a></li>
 					@endif
@@ -118,6 +125,7 @@
 	<script src="/js/dropzone.js"></script>
 	<script src="/js/jquery.quicksearch.js"></script>
 	<script src="/js/slimbox2.js"></script>
+	<script src="/js/jquery-ui.js"></script>
 	<script type="text/javascript">
 		if(document.getElementById("notice")!== null)
 	        $('#notice').delay(3000).fadeOut(1000);

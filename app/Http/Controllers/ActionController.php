@@ -2,6 +2,10 @@
 use App\Action;
 use App\Requirement;
 use App\Document;
+use App\Category;
+use App\Transaction;
+use App\Available;
+use App\Queue;
 use Illuminate\Http\Request;
 
 class ActionController extends Controller {
@@ -41,15 +45,30 @@ class ActionController extends Controller {
     public function addAction(Request $request){
         $arrays = $request->input('my-select');
         $name = $request->input('name');
+        $category = $request->input('category');
         $description = $request->input('description');
+        $temp = Category::where('name','=',$category)->first();
+        if(is_null($temp)){
+            $category_id = Category::insertGetId( ['name' => $category] );
+            $gen = "INSERT INTO Category(id, name) VALUES('$category_id', '$category');";
+            Transaction::insert(['type' => 'S', 'content' => $gen]);
+        }else{
+            $category_id = $temp->id;   
+        }
+
         $id = Action::insertGetId(
-            ['name' => $name,'description' => $description]
+            ['name' => $name,'description' => $description,'category_id'=>$category_id]
         );
+        $gen = "INSERT INTO Action(id, name, description, category_id) VALUES('$id', '$name', '$description', '$category_id');";
+        Transaction::insert(['type' => 'S', 'content' => $gen]);
+
         if(!is_null($arrays)){
             foreach($arrays as $element){
                 Requirement::insert(
                     ['document_id' => $element,'action_id' => $id]
                 );
+                $gen = "INSERT INTO Requirement(action_id, document_id, is_optional) VALUES('$id', '$element', '0');";
+                Transaction::insert(['type' => 'S', 'content' => $gen]);
             }
         }
         return redirect('actions/add')
@@ -64,38 +83,41 @@ class ActionController extends Controller {
     }
 
     public function editAction(Request $request){
+        $arrays = $request->input('my-select');
         $id = $request->input('id');
         $name = $request->input('name');
         $description = $request->input('description');
         Action::where('action_id', $id)
             ->update(['name' => $name,'description' => $description]);
+        if(!is_null($arrays)){
+            Requirement::where('action_id','=',$id)->delete();
+            foreach($arrays as $element){
+                Requirement::insert(
+                    ['document_id' => $element,'action_id' => $id]
+                );
+            }
+        }    
         return redirect('actions/'.$id)
                        ->with('success', 'แก้ไขบริการเรียบร้อยแล้ว');
     }
 
     public function removeAction($id){
+        Requirement::where("action_id",$id)->delete();
+        Available::where("action_id",$id)->delete();
+        Queue::where("action_id",$id)->delete();
         Action::where('action_id', $id)->delete();
         return redirect('actions')
                        ->with('success', 'ลบบริการเรียบร้อยแล้ว');
     }
 
-    public function show($id){
-        try{
-            $response = [
-                'action' => []
-            ];
-            $statusCode = 200;
-            $action = Action::find($id);
-            $response['action'][] = [
-                'id' => $action->action_id,
-                'name' => $action->name,
-                'description' => $action->description
-            ];
-        }catch (Exception $e){
-            $statusCode = 404;
-        }finally{
-            return Response::json($response, $statusCode);
+    public function getCategory(Request $request){
+        $term      = $request->input('term');
+        $associate = array();
+        $search    = Category::where('name', 'LIKE', '%'.$term.'%')->take(10)->get();
+        foreach ($search as $result) {
+            $associate[] = $result->name;
         }
+        return response($associate);
     }
 
 }

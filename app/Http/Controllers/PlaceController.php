@@ -65,6 +65,8 @@ class PlaceController extends Controller {
     }
 
     public function removePlace($id){
+        Available::where("place_id",$id)->delete();
+        Queue::where("place_id",$id)->delete();
         Place::where('place_id', $id)->delete();
         return redirect('places')
                        ->with('success', 'ลบสถานที่เรียบร้อยแล้ว');

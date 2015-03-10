@@ -15,91 +15,102 @@ Route::get('/', 'HomeController@index');
 
 Route::get('home', 'HomeController@index');
 
-Route::get('actions','ActionController@index');
+Route::get('getdata', 'ActionController@getCategory');
 
-Route::get('actions/add', [
-    'as' => 'action-add', 'uses' => 'ActionController@addActionShow'
-]);
+Route::group(['prefix' => 'actions'], function(){
 
-Route::post('actions/add/submit', [
-    'as' => 'action-add-submit', 'uses' => 'ActionController@addAction'
-]);
+    Route::get('','ActionController@index');
 
-Route::get('actions/edit/{id}', [
-    'as' => 'action-edit', 'uses' => 'ActionController@editActionShow'
-]);
+    Route::get('add', [
+        'as' => 'action-add', 'uses' => 'ActionController@addActionShow'
+    ]);
 
-Route::post('actions/edit/submit', [
-    'as' => 'action-edit-submit', 'uses' => 'ActionController@editAction'
-]);
+    Route::post('add/submit', [
+        'as' => 'action-add-submit', 'uses' => 'ActionController@addAction'
+    ]);
 
-Route::get('actions/remove/{id}', [
-    'as' => 'action-remove', 'uses' => 'ActionController@removeAction'
-]);
+    Route::get('edit/{id}', [
+        'as' => 'action-edit', 'uses' => 'ActionController@editActionShow'
+    ]);
 
-Route::get('actions/{id}', [
-    'as' => 'action', 'uses' => 'ActionController@detail'
-]);
+    Route::post('edit/submit', [
+        'as' => 'action-edit-submit', 'uses' => 'ActionController@editAction'
+    ]);
 
-Route::get('documents','DocumentController@index');
+    Route::get('remove/{id}', [
+        'as' => 'action-remove', 'uses' => 'ActionController@removeAction'
+    ]);
 
-Route::get('documents/add', [
-    'as' => 'document-add', 'uses' => 'DocumentController@addDocumentShow'
-]);
+    Route::get('{id}', [
+        'as' => 'action', 'uses' => 'ActionController@detail'
+    ]);
+});
 
-Route::post('documents/add/submit', [
-    'as' => 'document-add-submit', 'uses' => 'DocumentController@addDocument'
-]);
 
-Route::get('documents/edit/{id}', [
-    'as' => 'document-edit', 'uses' => 'DocumentController@editDocumentShow'
-]);
+Route::group(['prefix' => 'documents'], function(){
+    Route::get('','DocumentController@index');
 
-Route::post('documents/edit/submit', [
-    'as' => 'document-edit-submit', 'uses' => 'DocumentController@editDocument'
-]);
+    Route::get('add', [
+        'as' => 'document-add', 'uses' => 'DocumentController@addDocumentShow'
+    ]);
 
-Route::get('documents/remove/{id}', [
-    'as' => 'document-remove', 'uses' => 'DocumentController@removeDocument'
-]);
+    Route::post('add/submit', [
+        'as' => 'document-add-submit', 'uses' => 'DocumentController@addDocument'
+    ]);
 
-Route::get('documents/{id}', [
-    'as' => 'document', 'uses' => 'DocumentController@detail'
-]);
+    Route::get('edit/{id}', [
+        'as' => 'document-edit', 'uses' => 'DocumentController@editDocumentShow'
+    ]);
+
+    Route::post('edit/submit', [
+        'as' => 'document-edit-submit', 'uses' => 'DocumentController@editDocument'
+    ]);
+
+    Route::get('remove/{id}', [
+        'as' => 'document-remove', 'uses' => 'DocumentController@removeDocument'
+    ]);
+
+    Route::get('{id}', [
+        'as' => 'document', 'uses' => 'DocumentController@detail'
+    ]);
+});
 
 /////////////////////////////////////////////////////////////////////
 
-Route::get('places','PlaceController@index');
+Route::group(['prefix' => 'places'], function(){
+    Route::get('','PlaceController@index');
 
-Route::get('places/add', [
-    'as' => 'place-add', 'uses' => 'PlaceController@addPlaceShow'
-]);
-Route::post('places/add/submit', [
-    'as' => 'place-add-submit', 'uses' => 'PlaceController@addPlace'
-]);
-Route::get('places/edit/{id}', [
-    'as' => 'place-edit', 'uses' => 'PlaceController@editPlaceShow'
-]);
+    Route::get('add', [
+        'as' => 'place-add', 'uses' => 'PlaceController@addPlaceShow'
+    ]);
+    Route::post('add/submit', [
+        'as' => 'place-add-submit', 'uses' => 'PlaceController@addPlace'
+    ]);
+    Route::get('edit/{id}', [
+        'as' => 'place-edit', 'uses' => 'PlaceController@editPlaceShow'
+    ]);
 
-Route::post('places/edit/submit', [
-    'as' => 'place-edit-submit', 'uses' => 'PlaceController@editPlace'
-]);
+    Route::post('edit/submit', [
+        'as' => 'place-edit-submit', 'uses' => 'PlaceController@editPlace'
+    ]);
 
-Route::get('places/remove/{id}', [
-    'as' => 'place-remove', 'uses' => 'PlaceController@removePlace'
-]);
-Route::get('places/{id}', [
-    'as' => 'place', 'uses' => 'PlaceController@detail'
-]);
+    Route::get('remove/{id}', [
+        'as' => 'place-remove', 'uses' => 'PlaceController@removePlace'
+    ]);
+    Route::get('{id}', [
+        'as' => 'place', 'uses' => 'PlaceController@detail'
+    ]);
+});
 
+Route::group(['prefix' => 'image'], function(){
+    Route::get('', [
+        'as' => 'image', 'uses' => 'ImageController@index'
+    ]);
 
-Route::get('image', [
-    'as' => 'image', 'uses' => 'ImageController@index'
-]);
-
-Route::post('image/upload', [
-    'as' => 'image-upload', 'uses' => 'ImageController@uploadImage'
-]);
+    Route::post('upload', [
+        'as' => 'image-upload', 'uses' => 'ImageController@uploadImage'
+    ]);
+});
 
 Route::get('queue','QueueController@showQueue');
 
@@ -108,19 +119,43 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('api/v1/action/{id}', array(
-			'as' => 'action.show',
-			'uses' => 'ActionServiceController@show'
-));
+Route::group(['prefix' => 'api/v1'], function(){
 
-Route::get('api/v1/transaction', array(
-			'uses' => 'ServiceController@getAllTransaction'
-));
+    Route::get('transaction', array(
+    			'uses' => 'ServiceController@getAllTransaction'
+    ));
 
-Route::get('api/v1/transaction/{version}', array(
-			'uses' => 'ServiceController@getTransaction'
-));
+    Route::get('transaction/{version}', array(
+    			'uses' => 'ServiceController@getTransaction'
+    ));
 
-Route::get('api/v1/actions/{id}/places', array(
-            'uses' => 'ServiceController@getPlaceByAction'
-));
+    Route::get('actions/{id}/places', array(
+                'uses' => 'ServiceController@getPlaceByAction'
+    ));
+
+    Route::post('queue', array(
+                 'uses' => 'ServiceController@createQueue'
+    ));
+
+    Route::get('queue/noti/{queue_id}', [
+        'as' => 'queue-push', 'uses' => 'QueueController@pushNoti'
+    ]);
+
+    Route::post('queue/{queue_id}/rate', array(
+                 'uses' => 'ServiceController@postRate'
+    ));
+
+    Route::get('queue/{reg_id}', array(
+                 'uses' => 'ServiceController@getQueue'
+    ));
+
+    Route::post('queue/{id}', array(
+                 'uses' => 'ServiceController@checkCode'
+    ));
+
+    
+
+    
+
+
+});

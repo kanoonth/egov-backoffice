@@ -1,5 +1,5 @@
 <?php namespace App;
-
+use App\Available;
 use Illuminate\Database\Eloquent\Model;
 
 class Place extends Model {
@@ -7,5 +7,6 @@ class Place extends Model {
 	protected $table = 'place';
 
 	// protected $fillable = ['name', 'description'];
+
 
 }
