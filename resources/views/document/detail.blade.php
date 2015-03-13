@@ -23,7 +23,7 @@
 					<br>
 					<div class="text-right">
 						<a href="{{ route('document-edit', $document->document_id ) }}"><button class="btn btn-success">แก้ไข</button></a>
-						<a href="{{ route('document-remove', $document->document_id ) }}"><button class="btn btn-danger">ลบเอกสาร</button></a>
+						<a href="{{ route('document-remove', $document->document_id ) }}" onclick="return confirm('คุณต้องการลบเอกสารนี้ใช่ไหม?')"><button class="btn btn-danger">ลบเอกสาร</button></a>
 					</div>
 				</div>
 			</div>

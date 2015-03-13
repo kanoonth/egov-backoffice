@@ -85,10 +85,11 @@
             <div class="text-center">  
               <div id="googleMap" style="width:500px;height:380px;"></div>
             </div>
-
-            <a href="{{ route('place-edit', $place->place_id ) }}"><button class="btn btn-success">แก้ไข</button></a>
-            <a href="{{ route('place-remove', $place->place_id ) }}"><button class="btn btn-danger">ลบสถานที่</button></a>
-          
+            <br>
+            <div class="text-right">
+              <a href="{{ route('place-edit', $place->place_id ) }}"><button class="btn btn-success">แก้ไข</button></a>
+              <a href="{{ route('place-remove', $place->place_id ) }}" onclick="return confirm('คุณต้องการลบสถานที่นี้ใช่ไหม?')"><button class="btn btn-danger">ลบสถานที่</button></a>
+            </div>
 
         </div>  
       </div>  

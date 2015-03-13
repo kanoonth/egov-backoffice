@@ -23,7 +23,7 @@
 					<br>
 					<div class="text-right">
 						<a href="{{ route('action-edit', $action->action_id ) }}"><button class="btn btn-success">แก้ไข</button></a>
-						<a href="{{ route('action-remove', $action->action_id ) }}"><button class="btn btn-danger">ลบบริการ</button></a>
+						<a href="{{ route('action-remove', $action->action_id ) }}" onclick="return confirm('คุณต้องการลบบริการนี้ใช่ไหม?')"><button class="btn btn-danger">ลบบริการ</button></a>
 					</div>
 				</div>
 			</div>

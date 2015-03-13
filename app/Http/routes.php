@@ -145,6 +145,10 @@ Route::group(['prefix' => 'api/v1'], function(){
                  'uses' => 'ServiceController@postRate'
     ));
 
+    Route::get('queue/{queue_id}/place', array(
+                 'uses' => 'ServiceController@getPlace'
+    ));
+
     Route::get('queue/{reg_id}', array(
                  'uses' => 'ServiceController@getQueue'
     ));
@@ -152,7 +156,6 @@ Route::group(['prefix' => 'api/v1'], function(){
     Route::post('queue/{id}', array(
                  'uses' => 'ServiceController@checkCode'
     ));
-
     
 
     

@@ -53,8 +53,8 @@
 	$(document).ready(function(){
 	    // $('#my-select').multiSelect();
 	    $('.searchable').multiSelect({
-		  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
-		  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+		  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='ลอง \"บัตรประชาชน\"'>",
+		  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='ลอง \"บัตรประชาชน\"'>",
 		  afterInit: function(ms){
 		    var that = this,
 		        $selectableSearch = that.$selectableUl.prev(),

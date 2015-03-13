@@ -7,6 +7,8 @@ class Document extends Model {
 
 	protected $table = 'document';
 
+	public $timestamps = true;
+
 	protected $fillable = ['name', 'description','photo_path'];
 
 }

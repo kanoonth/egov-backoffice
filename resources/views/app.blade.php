@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>AskMe!</title>
 
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/css/app.css" rel="stylesheet">
 	<link href="/css/multi-select.css" rel="stylesheet">
 	<link href="/css/dropzone.css" rel="stylesheet">
@@ -56,6 +57,13 @@
         {{ Session::get('fail') }}
     </div>
 	@endif
+	@if ($errors->any())
+		<div id="notice" class='notice notice-fail'>
+			@foreach ( $errors->all() as $error )
+				<p>{{ $error }}</p>
+			@endforeach
+		</div>
+	@endif
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -89,7 +97,7 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">สถานที่บริการ <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="/places/">สภานที่บริการทั้งหมด</a></li>
+								<li><a href="/places/">สถานที่ให้บริการทั้งหมด</a></li>
 								<li><a href="{{ route('place-add' )}}">เพิ่มสถานที่ใหม่</a></li>
 							</ul>
 						</li>

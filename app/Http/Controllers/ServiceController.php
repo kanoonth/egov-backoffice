@@ -2,6 +2,7 @@
 use App\Transaction;
 use App\Available;
 use App\Queue;
+use App\Place;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller {
@@ -148,6 +149,25 @@ class ServiceController extends Controller {
             Queue::where('queue_id', $queue_id)
             ->update(['rate' => $rate]);
             $response = "OK";
+        }catch (Exception $e){
+            $statusCode = 404;
+        }finally{
+            return response($response, $statusCode);
+        }
+    }
+
+    public function getPlace($queue_id){
+        try{
+            $response = [];
+            $statusCode = 200;
+            $queue = Queue::where('queue_id','=',$queue_id)->first();
+            $place = Place::where('place_id','=',$queue['place_id'])->first();
+            $response[] = [
+                'id' => $place['place_id'],
+                'name' => $place['name'],
+                'longitude' => $place['longitude'],
+                'latitude' => $place['latitude'],
+            ];
         }catch (Exception $e){
             $statusCode = 404;
         }finally{

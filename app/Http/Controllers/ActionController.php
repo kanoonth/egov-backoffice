@@ -12,6 +12,11 @@ class ActionController extends Controller {
 
 
     public $restful = true;
+
+    protected $rules = [
+        'name' => ['required', 'min:3'],
+        'description' => ['required'],
+    ];
     /**
      * Create a new controller instance.
      *
@@ -23,8 +28,13 @@ class ActionController extends Controller {
     }
 
     public function index() {
+        $actions = Action::join('category','action.category_id','=','category.id')
+                ->select('action.action_id','action.name','action.created_at'
+                    ,'action.updated_at','category.name as category_name')
+                ->orderBy('action.name')
+                ->get();
         return view('action.index')
-        ->with('actions', Action::orderBy('name')->get());
+        ->with('actions', $actions);
     }
 
     public function detail($id){
@@ -43,6 +53,7 @@ class ActionController extends Controller {
     }
 
     public function addAction(Request $request){
+        $this->validate($request, $this->rules);
         $arrays = $request->input('my-select');
         $name = $request->input('name');
         $category = $request->input('category');
@@ -83,18 +94,26 @@ class ActionController extends Controller {
     }
 
     public function editAction(Request $request){
+        $this->validate($request, $this->rules);
         $arrays = $request->input('my-select');
         $id = $request->input('id');
         $name = $request->input('name');
         $description = $request->input('description');
         Action::where('action_id', $id)
             ->update(['name' => $name,'description' => $description]);
+        $gen = "UPDATE Action SET id='$id', name='$name', description='$description' WHERE id='$id';";
+        Transaction::insert(['type' => 'S', 'content' => $gen]);
+
         if(!is_null($arrays)){
             Requirement::where('action_id','=',$id)->delete();
             foreach($arrays as $element){
                 Requirement::insert(
                     ['document_id' => $element,'action_id' => $id]
                 );
+                $gen = "DELETE FROM Requirement WHERE action_id='$id';";
+                Transaction::insert(['type' => 'S', 'content' => $gen]);
+                $gen = "INSERT INTO Requirement(action_id, document_id, is_optional) VALUES('$id', '$element', '0');";
+                Transaction::insert(['type' => 'S', 'content' => $gen]);
             }
         }    
         return redirect('actions/'.$id)
@@ -102,6 +121,8 @@ class ActionController extends Controller {
     }
 
     public function removeAction($id){
+        $gen = "DELETE FROM Action WHERE id='$id';";
+        Transaction::insert(['type' => 'S', 'content' => $gen]);
         Requirement::where("action_id",$id)->delete();
         Available::where("action_id",$id)->delete();
         Queue::where("action_id",$id)->delete();

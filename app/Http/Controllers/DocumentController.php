@@ -10,6 +10,10 @@ class DocumentController extends Controller {
 
 
     public $restful = true;
+    protected $rules = [
+        'name' => ['required', 'min:3'],
+        'file' => ['image']
+    ];
     /**
      * Create a new controller instance.
      *
@@ -35,6 +39,7 @@ class DocumentController extends Controller {
     }
 
     public function addDocument(Request $request){
+        $this->validate($request, $this->rules);
         $name = $request->input('name');
         $description = $request->input('description');
         $id = Document::insertGetId(
@@ -54,8 +59,10 @@ class DocumentController extends Controller {
         // TODO: Check the validity of this code, by mapfap
         $gen = "INSERT INTO Document(id, name, description, photo_path) VALUES('$id', '$name', '$description', '$filename');";
         Transaction::insert(['type' => 'S', 'content' => $gen]);
-        $gen = $filename;
-        Transaction::insert(['type' => 'F', 'content' => $gen]);
+        if(!is_null($filename)){
+            $gen = $filename;
+            Transaction::insert(['type' => 'F', 'content' => $gen]);
+        }
 
         return redirect('documents/add')
                        ->with('success', 'เพิ่มเอกสารเรียบร้อยแล้ว');
@@ -68,6 +75,7 @@ class DocumentController extends Controller {
     }
 
     public function editDocument(Request $request){
+        $this->validate($request, $this->rules);
         $id = $request->input('id');
         $name = $request->input('name');
         $description = $request->input('description');
@@ -84,11 +92,19 @@ class DocumentController extends Controller {
             Document::where('document_id', $id)
                 ->update(['photo_path' => $path]);
         }
+        $gen = "UPDATE Document SET id='$id', name='$name', description='$description', photo_path='$filename' WHERE id='$id';";
+        Transaction::insert(['type' => 'S', 'content' => $gen]);
+        if(!is_null($filename)){
+            $gen = $filename;
+            Transaction::insert(['type' => 'F', 'content' => $gen]);
+        }
         return redirect('documents/'.$id)
                         ->with('success', 'แก้ไขเอกสารเรียบร้อยแล้ว');
     }
 
     public function removeDocument($id){
+        $gen = "DELETE FROM Document WHERE id='$id';";
+        Transaction::insert(['type' => 'S', 'content' => $gen]);
         Requirement::where("document_id",$id)->delete();
         Document::where('document_id', $id)->delete();
         return redirect('documents')

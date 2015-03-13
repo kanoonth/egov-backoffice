@@ -6,6 +6,8 @@ class Place extends Model {
 
 	protected $table = 'place';
 
+	public $timestamps = true;
+
 	// protected $fillable = ['name', 'description'];
 
 

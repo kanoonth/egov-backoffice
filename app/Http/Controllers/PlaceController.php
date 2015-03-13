@@ -6,6 +6,11 @@ class PlaceController extends Controller {
 
 
     public $restful = true;
+    protected $rules = [
+        'name' => ['required', 'min:3'],
+        'lat' => ['required','numeric'],
+        'lng' => ['required','numeric']
+    ];
     /**
      * Create a new controller instance.
      *
@@ -31,6 +36,7 @@ class PlaceController extends Controller {
     }
 
     public function addPlace(Request $request){
+        $this->validate($request, $this->rules);
         $name = $request->input('name');
         $lat = $request->input('lat');
         $lng = $request->input('lng');
@@ -51,6 +57,7 @@ class PlaceController extends Controller {
     }
 
     public function editPlace(Request $request){
+        $this->validate($request, $this->rules);
         $id = $request->input('id');
         $name = $request->input('name');
         $lat = $request->input('lat');

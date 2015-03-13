@@ -11,6 +11,8 @@ class Action extends Model {
 
 	protected $table = 'action';
 
+	public $timestamps = true;
+
 	protected $fillable = ['name', 'description','category_id'];
 
 

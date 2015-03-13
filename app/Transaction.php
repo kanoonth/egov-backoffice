@@ -6,6 +6,8 @@ class Transaction extends Model {
 
 	protected $table = 'transaction';
 
+	public $timestamps = true;
+
 	//protected $fillable = ['name', 'description','photo_path'];
 
 }

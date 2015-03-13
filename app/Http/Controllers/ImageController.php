@@ -8,6 +8,9 @@ class ImageController extends Controller {
 
 
     public $restful = true;
+    protected $rules = [
+        'file' => ['image']
+    ];
     /**
      * Create a new controller instance.
      *
@@ -23,6 +26,7 @@ class ImageController extends Controller {
     }
 
     public function uploadImage(Request $request){
+        $this->validate($request, $this->rules);
         $file = $request->file('file');
         $extension =$file->getClientOriginalExtension();
         $filename = str_random(12).'.'.$extension;
