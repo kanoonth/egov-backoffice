@@ -104,7 +104,7 @@
 						<li>
 							<a href="/queue">แสดงรายการจองทั้งหมด</a>
 						</li>
-						<li><a href="{{ route('image' )}}">อัพโหลดรูป</a></li>
+						<!-- <li><a href="{{ route('image' )}}">อัพโหลดรูป</a></li> -->
 					@endif
 				</ul>
 
